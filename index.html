@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Student Project Submission</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
       --bg: #f0f8ff;
@@ -25,7 +26,7 @@
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding: 40px;
+      padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
 
@@ -44,6 +45,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      z-index: 10;
     }
 
     form {
@@ -90,17 +92,20 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 300px;
     }
 
     th, td {
       padding: 12px;
       border: 1px solid #ddd;
       text-align: left;
+      font-size: 14px;
     }
 
     th {
@@ -120,12 +125,54 @@
       padding: 6px 10px;
       margin-left: 4px;
       cursor: pointer;
+      font-size: 12px;
     }
 
     .project-icon {
-      width: 20px;
+      width: 18px;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-right: 6px;
+    }
+
+    /* 🔁 Responsive Design */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      form, #project-list {
+        padding: 15px;
+        margin: 10px;
+      }
+
+      h1, h2 {
+        font-size: 20px;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+      }
+
+      th, td {
+        font-size: 13px;
+        padding: 8px;
+      }
+
+      .toggle-dark {
+        font-size: 14px;
+        padding: 6px 10px;
+        top: 10px;
+        right: 10px;
+      }
+
+      .project-icon {
+        width: 14px;
+      }
+
+      button.action-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
     }
   </style>
 </head>
@@ -163,13 +210,11 @@
     const table = document.getElementById('projectTable').querySelector('tbody');
     const STORAGE_KEY = 'studentProjects';
 
-    // 🌑 Dark mode toggle
     function toggleDarkMode() {
       document.body.classList.toggle('dark');
       localStorage.setItem('darkMode', document.body.classList.contains('dark'));
     }
 
-    // On load - load data and theme
     window.addEventListener('DOMContentLoaded', () => {
       const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
       savedProjects.forEach((proj, i) => addToTable(proj.name, proj.project, i));
@@ -179,7 +224,6 @@
       }
     });
 
-    // Form submit
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
@@ -194,7 +238,6 @@
       }
     });
 
-    // Add row to table
     function addToTable(name, projectTitle, index) {
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -207,7 +250,6 @@
       table.appendChild(row);
     }
 
-    // Delete row
     function deleteProject(index) {
       let projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
       projects.splice(index, 1);
@@ -215,7 +257,6 @@
       refreshTable();
     }
 
-    // Edit row
     function editProject(index) {
       const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
       const proj = projects[index];
@@ -228,7 +269,6 @@
       }
     }
 
-    // Refresh table
     function refreshTable() {
       table.innerHTML = '';
       const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
