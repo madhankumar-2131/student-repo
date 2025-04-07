@@ -9,7 +9,6 @@
             background: linear-gradient(to right, #f0f8ff, #e6f7ff);
             padding: 40px;
             color: #333;
-            animation: fadeIn 1s ease-in;
         }
 
         h1, h2 {
@@ -66,7 +65,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            animation: fadeIn 1s ease-in-out;
         }
 
         th, td {
@@ -82,11 +80,6 @@
 
         tr.new-entry {
             animation: highlight 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
         }
 
         @keyframes slideIn {
@@ -123,10 +116,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>John</td>
-                    <td>AI Attendance System</td>
-                </tr>
+                <!-- Entries will be added here -->
             </tbody>
         </table>
     </div>
@@ -135,16 +125,32 @@
         const form = document.getElementById('projectForm');
         const projectTable = document.getElementById('projectTable').querySelector('tbody');
 
+        // Load data from localStorage on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedProjects = JSON.parse(localStorage.getItem('studentProjects')) || [];
+            savedProjects.forEach(project => addToTable(project.name, project.project));
+        });
+
+        // Add entry to table
+        function addToTable(name, projectTitle) {
+            const row = document.createElement('tr');
+            row.classList.add('new-entry');
+            row.innerHTML = `<td>${name}</td><td>${projectTitle}</td>`;
+            projectTable.appendChild(row);
+        }
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
             const project = document.getElementById('project').value.trim();
 
             if (name && project) {
-                const row = document.createElement('tr');
-                row.classList.add('new-entry');
-                row.innerHTML = `<td>${name}</td><td>${project}</td>`;
-                projectTable.appendChild(row);
+                addToTable(name, project);
+
+                // Save to localStorage
+                const savedProjects = JSON.parse(localStorage.getItem('studentProjects')) || [];
+                savedProjects.push({ name, project });
+                localStorage.setItem('studentProjects', JSON.stringify(savedProjects));
 
                 form.reset(); // Clear the form
             }
