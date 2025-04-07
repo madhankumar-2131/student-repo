@@ -1,25 +1,43 @@
 pipeline {
     agent any
 
+    environment {
+        PROJECT_NAME = 'student-project-platform'
+    }
+
     stages {
-        stage('Build Java') {
+        stage('Build Java Code') {
             steps {
-                echo "Compiling Java Program"
-                sh 'javac src/Student.java'
+                bat 'mkdir build'
+                bat 'javac -d build src\\Student.java'
             }
         }
 
-        stage('Generate HTML') {
+        stage('Copy HTML Files') {
             steps {
-                echo "Running Java Program"
-                sh 'java -cp src Student'
+                bat 'xcopy html build\\html /E /I /Y'
             }
         }
 
-        stage('Archive HTML Output') {
+        stage('Deploy to Render') {
             steps {
-                archiveArtifacts artifacts: 'web/index.html', onlyIfSuccessful: true
+                echo 'Deploying to Render...'
+                // You can add your deployment script here
             }
+        }
+    }
+
+    post {
+        success {
+            mail to: 'madhan19072004@gmail.com',
+                 subject: "${env.PROJECT_NAME} - Build #${env.BUILD_NUMBER} - SUCCESS 🎉",
+                 body: "Good news! Build #${env.BUILD_NUMBER} of ${env.PROJECT_NAME} succeeded!"
+        }
+
+        failure {
+            mail to: 'madhan19072004@gmail.com',
+                 subject: "${env.PROJECT_NAME} - Build #${env.BUILD_NUMBER} - FAILED ❌",
+                 body: "Oops! Build #${env.BUILD_NUMBER} of ${env.PROJECT_NAME} failed. Please check the Jenkins logs."
         }
     }
 }
