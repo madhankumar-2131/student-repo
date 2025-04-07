@@ -124,11 +124,12 @@
     <script>
         const form = document.getElementById('projectForm');
         const projectTable = document.getElementById('projectTable').querySelector('tbody');
+        const STORAGE_KEY = 'studentProjects';
 
         // Load data from localStorage on page load
         window.addEventListener('DOMContentLoaded', () => {
-            const savedProjects = JSON.parse(localStorage.getItem('studentProjects')) || [];
-            savedProjects.forEach(project => addToTable(project.name, project.project));
+            const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            savedProjects.forEach(({ name, project }) => addToTable(name, project));
         });
 
         // Add entry to table
@@ -139,20 +140,22 @@
             projectTable.appendChild(row);
         }
 
+        // Form submission
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+
             const name = document.getElementById('name').value.trim();
             const project = document.getElementById('project').value.trim();
 
             if (name && project) {
                 addToTable(name, project);
 
-                // Save to localStorage
-                const savedProjects = JSON.parse(localStorage.getItem('studentProjects')) || [];
+                // Store to localStorage
+                const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
                 savedProjects.push({ name, project });
-                localStorage.setItem('studentProjects', JSON.stringify(savedProjects));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProjects));
 
-                form.reset(); // Clear the form
+                form.reset();
             }
         });
     </script>
