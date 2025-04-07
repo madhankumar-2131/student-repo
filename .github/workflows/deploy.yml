@@ -15,7 +15,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '17'  # ✅ Only this is required
 
       - name: Compile Java Code
         run: javac src/Student.java
@@ -33,4 +33,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          distribution: 'default' # ✅ Required to avoid error
+          distribution: 'default'  # ✅ Required here only
+
