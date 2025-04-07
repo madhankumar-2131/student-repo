@@ -26,11 +26,11 @@ jobs:
       - name: Upload to GitHub Pages branch
         run: |
           mkdir public
-          cp web/index.html public/
+          cp index.html public/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          distribution: 'default' # ✅ Required in new versions
+          distribution: 'default' # ✅ Required to avoid error
