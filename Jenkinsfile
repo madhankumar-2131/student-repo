@@ -16,7 +16,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying to Render...'
+                echo 'Deploying to GithubActions to Deploy..---->https://madhankumar-2131.github.io/student-repo/'
             }
         }
     }
