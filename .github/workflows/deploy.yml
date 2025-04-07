@@ -1,4 +1,4 @@
-name: Java to Render Deployment
+name: Java to GitHub Pages
 
 on:
   push:
@@ -23,10 +23,13 @@ jobs:
       - name: Run Java to generate HTML
         run: echo -e "John\nAI Attendance System" | java -cp src Student
 
-      - name: Commit updated HTML
+      - name: Upload to GitHub Pages branch
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add web/index.html
-          git commit -m "Auto update from GitHub Actions"
-          git push
+          mkdir public
+          cp web/index.html public/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
