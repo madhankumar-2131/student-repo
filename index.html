@@ -1,164 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Project Submission</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #f0f8ff, #e6f7ff);
-            padding: 40px;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <title>Student Project Submission</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png" />
+  <style>
+    :root {
+      --bg: #f0f8ff;
+      --form-bg: #ffffff;
+      --text: #333;
+      --accent: #0077cc;
+      --hover: #f1faff;
+    }
 
-        h1, h2 {
-            text-align: center;
-            color: #0077cc;
-            animation: slideIn 1s ease;
-        }
+    body.dark {
+      --bg: #121212;
+      --form-bg: #1e1e1e;
+      --text: #f0f0f0;
+      --accent: #4fc3f7;
+      --hover: #2a2a2a;
+    }
 
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            max-width: 400px;
-            margin: auto;
-            margin-bottom: 40px;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 40px;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        label {
-            font-weight: bold;
-        }
+    h1, h2 {
+      text-align: center;
+      color: var(--accent);
+    }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 20px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
+    .toggle-dark {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-        input[type="submit"] {
-            background: #0077cc;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    form {
+      background: var(--form-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+      margin-bottom: 40px;
+    }
 
-        input[type="submit"]:hover {
-            background: #005fa3;
-        }
+    label {
+      font-weight: bold;
+    }
 
-        #project-list {
-            max-width: 700px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
-        }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    input[type="submit"] {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
 
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
+    input[type="submit"]:hover {
+      background: #005fa3;
+      transform: scale(1.05);
+    }
 
-        th {
-            background-color: #0077cc;
-            color: white;
-        }
+    #project-list {
+      max-width: 800px;
+      margin: auto;
+      background: var(--form-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    }
 
-        tr.new-entry {
-            animation: highlight 1s ease-in-out;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to   { transform: translateY(0); opacity: 1; }
-        }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
 
-        @keyframes highlight {
-            0%   { background-color: #e0f7fa; }
-            100% { background-color: transparent; }
-        }
-    </style>
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    tr:hover {
+      background-color: var(--hover);
+    }
+
+    button.action-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+
+    .project-icon {
+      width: 20px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Submit Your Project</h1>
-    <form id="projectForm">
-        <label for="name">Student Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
 
-        <label for="project">Project Title:</label><br>
-        <input type="text" id="project" name="project" required><br>
+  <h1>Submit Your Project</h1>
+  <form id="projectForm">
+    <label for="name">Student Name:</label><br />
+    <input type="text" id="name" name="name" required /><br />
 
-        <input type="submit" value="Submit">
-    </form>
+    <label for="project">Project Title:</label><br />
+    <input type="text" id="project" name="project" required /><br />
 
-    <div id="project-list">
-        <h2>Latest Projects</h2>
-        <table id="projectTable">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Project Title</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Entries will be added here -->
-            </tbody>
-        </table>
-    </div>
+    <input type="submit" value="Submit" />
+  </form>
 
-    <script>
-        const form = document.getElementById('projectForm');
-        const projectTable = document.getElementById('projectTable').querySelector('tbody');
-        const STORAGE_KEY = 'studentProjects';
+  <div id="project-list">
+    <h2>Latest Projects</h2>
+    <table id="projectTable">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Project Title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-        // Load data from localStorage on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            savedProjects.forEach(({ name, project }) => addToTable(name, project));
-        });
+  <script>
+    const form = document.getElementById('projectForm');
+    const table = document.getElementById('projectTable').querySelector('tbody');
+    const STORAGE_KEY = 'studentProjects';
 
-        // Add entry to table
-        function addToTable(name, projectTitle) {
-            const row = document.createElement('tr');
-            row.classList.add('new-entry');
-            row.innerHTML = `<td>${name}</td><td>${projectTitle}</td>`;
-            projectTable.appendChild(row);
-        }
+    // 🌑 Dark mode toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+    }
 
-        // Form submission
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+    // On load - load data and theme
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      savedProjects.forEach((proj, i) => addToTable(proj.name, proj.project, i));
 
-            const name = document.getElementById('name').value.trim();
-            const project = document.getElementById('project').value.trim();
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+      }
+    });
 
-            if (name && project) {
-                addToTable(name, project);
+    // Form submit
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const project = document.getElementById('project').value.trim();
 
-                // Store to localStorage
-                const savedProjects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-                savedProjects.push({ name, project });
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProjects));
+      if (name && project) {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        saved.push({ name, project });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+        addToTable(name, project, saved.length - 1);
+        form.reset();
+      }
+    });
 
-                form.reset();
-            }
-        });
-    </script>
+    // Add row to table
+    function addToTable(name, projectTitle, index) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${name}</td>
+        <td><img src="https://cdn-icons-png.flaticon.com/512/3106/3106784.png" class="project-icon" />${projectTitle}</td>
+        <td>
+          <button class="action-btn" onclick="editProject(${index})">Edit</button>
+          <button class="action-btn" onclick="deleteProject(${index})">Delete</button>
+        </td>`;
+      table.appendChild(row);
+    }
+
+    // Delete row
+    function deleteProject(index) {
+      let projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      projects.splice(index, 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+      refreshTable();
+    }
+
+    // Edit row
+    function editProject(index) {
+      const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      const proj = projects[index];
+      const name = prompt("Edit Name:", proj.name);
+      const project = prompt("Edit Project Title:", proj.project);
+      if (name && project) {
+        projects[index] = { name, project };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+        refreshTable();
+      }
+    }
+
+    // Refresh table
+    function refreshTable() {
+      table.innerHTML = '';
+      const projects = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      projects.forEach((proj, i) => addToTable(proj.name, proj.project, i));
+    }
+  </script>
 
 </body>
 </html>
