@@ -4,12 +4,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building project...'
+                echo 'Building your student platform...'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying to Render...'
             }
         }
     }
@@ -17,17 +24,16 @@ pipeline {
     post {
         success {
             emailext (
-                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - SUCCESS ✅",
-                body: "Good job!\nBuild passed: ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                subject: "✅ ${env.JOB_NAME} #${env.BUILD_NUMBER} succeeded",
+                body: "Great job! The build succeeded.\n\nCheck it here: ${env.BUILD_URL}",
                 to: 'madhan19072004@gmail.com'
             )
         }
+
         failure {
             emailext (
-                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - FAILED ❌",
-                body: "Oops! Something went wrong.\nCheck details: ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                subject: "❌ ${env.JOB_NAME} #${env.BUILD_NUMBER} failed",
+                body: "Oops, the build failed.\n\nCheck it here: ${env.BUILD_URL}",
                 to: 'madhan19072004@gmail.com'
             )
         }
