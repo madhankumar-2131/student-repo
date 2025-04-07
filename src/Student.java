@@ -12,14 +12,14 @@ public class Student {
         String project = sc.nextLine();
 
         try {
-            FileWriter writer = new FileWriter("web/index.html");
+            FileWriter writer = new FileWriter("index.html"); // no web folder
             writer.write("<html><head><title>Student Project</title></head><body>");
             writer.write("<h1>Latest Project Submission</h1>");
             writer.write("<p><strong>Name:</strong> " + name + "</p>");
             writer.write("<p><strong>Project:</strong> " + project + "</p>");
             writer.write("</body></html>");
             writer.close();
-            System.out.println("Project info saved to web/index.html");
+            System.out.println("Project info saved to index.html");
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
         }
